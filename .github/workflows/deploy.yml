@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy naar server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 178.105.213.121
+          username: root
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /opt/webproject
+            git pull
+            docker compose up -d --build
